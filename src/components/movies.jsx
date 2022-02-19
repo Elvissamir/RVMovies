@@ -1,20 +1,29 @@
 import React from "react";
+import Likes from './common/like'
 import { useState } from "react";
 
-function Movies() {
+function Movies(props) {
   const moviesArray = [
-    { id: 0, title: "Movie 1", genre: "Action", numberInStock: 6, rate: 2.5 },
-    { id: 1, title: "Movie 2", genre: "Romance", numberInStock: 4, rate: 2.5 },
-    { id: 2, title: "Movie 3", genre: "Adventure", numberInStock: 5, rate: 2.5,},
-    { id: 3, title: "Movie 4", genre: "Comedy", numberInStock: 10, rate: 1 },
-    { id: 4, title: "Movie 5", genre: "Action", numberInStock: 100, rate: 3 },
+    { id: 0, title: "Movie 1", genre: "Action", numberInStock: 6, rate: 2.5, liked: false },
+    { id: 1, title: "Movie 2", genre: "Romance", numberInStock: 4, rate: 2.5, liked: false},
+    { id: 2, title: "Movie 3", genre: "Adventure", numberInStock: 5, rate: 2.5, liked: false},
+    { id: 3, title: "Movie 4", genre: "Comedy", numberInStock: 10, rate: 1, liked: false},
+    { id: 4, title: "Movie 5", genre: "Action", numberInStock: 100, rate: 3, liked: false },
   ];
 
   const [movies, setMovies] = useState(moviesArray);
 
   const handleDelete = (movie) => {
+    console.log('aqui')
     const m = movies.filter((item) => movie.id != item.id)
     setMovies(m) 
+  }
+
+  const handleLike = (movie) => {
+    const index = movies.indexOf(movie)
+    const m = [...movies] 
+    m[index].liked = !m[index].liked
+    setMovies(m)
   }
 
   const renderMoviesCount = () => {
@@ -22,7 +31,7 @@ function Movies() {
     const countMessage = `Showing ${movies.length} movies in the database`;
     const content = movies.length === 0 ? noMoviesMessage : countMessage;
 
-    return <p>{content}</p>;
+    return <p>{ content }</p>;
   };
 
   const renderMoviesList = () => {
@@ -44,6 +53,9 @@ function Movies() {
                     <td>{ movie.genre }</td>
                     <td>{ movie.numberInStock }</td>
                     <td>{ movie.rate }</td>
+                    <td>
+                      <Likes liked={ movie.liked } onClick={ () => handleLike(movie) } />
+                    </td>
                     <td className="text-center">
                       <button onClick={ () => handleDelete(movie) } className="bg-red-700 px-2 py-1 font-black text-white">
                         Delete

@@ -4,10 +4,10 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
-import { faCoffee } from '@fortawesome/free-solid-svg-icons';
+import { faCoffee, faHeart } from '@fortawesome/free-solid-svg-icons';
 import App from './App'
 
-library.add(fab, faCoffee)
+library.add(fab, faCoffee, faHeart)
 
 ReactDOM.render(
   <React.StrictMode>
