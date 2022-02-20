@@ -1,7 +1,6 @@
 import Nav from './components/nav'
 import Footer from './components/footer.jsx'
 import Movies from './components/movies.jsx'
-import './App.css';
 
 function App() {
   return (

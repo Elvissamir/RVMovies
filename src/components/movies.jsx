@@ -1,5 +1,7 @@
 import React from "react";
 import Likes from './common/like'
+import Pagination from "./common/pagination";
+import { paginate } from "../utils/paginate";
 import { useState } from "react";
 
 function Movies(props) {
@@ -11,10 +13,13 @@ function Movies(props) {
     { id: 4, title: "Movie 5", genre: "Action", numberInStock: 100, rate: 3, liked: false },
   ];
 
-  const [movies, setMovies] = useState(moviesArray);
+  const [ movies, setMovies ] = useState(moviesArray);
+  const [ pageSize, setPageSize ] = useState(4)
+  const [ currentPage, setCurrentPage ] = useState(1)
+
+  const movieList = paginate(movies)
 
   const handleDelete = (movie) => {
-    console.log('aqui')
     const m = movies.filter((item) => movie.id != item.id)
     setMovies(m) 
   }
@@ -25,6 +30,10 @@ function Movies(props) {
     m[index].liked = !m[index].liked
     setMovies(m)
   }
+
+  const handlePageChange = page => {
+    setCurrentPage(page)
+  }   
 
   const renderMoviesCount = () => {
     const noMoviesMessage = "There are no movies to show";
@@ -44,17 +53,20 @@ function Movies(props) {
             { headers.map(header => (
                 <th key={ header } className="text-left">{header}</th> ) 
             )}
+            <th></th>
           </tr>
         </thead>
         <tbody>
-            { movies.map((movie, index) => (
+            { movieList.map((movie, index) => (
                 <tr className="text-left" key={ index }>
                     <td>{ movie.title }</td>
                     <td>{ movie.genre }</td>
                     <td>{ movie.numberInStock }</td>
                     <td>{ movie.rate }</td>
-                    <td>
-                      <Likes liked={ movie.liked } onClick={ () => handleLike(movie) } />
+                    <td className="flex justify-center h-full">
+                      <div className="flex p-2">
+                        <Likes liked={ movie.liked } onClick={ () => handleLike(movie) } />
+                      </div>
                     </td>
                     <td className="text-center">
                       <button onClick={ () => handleDelete(movie) } className="bg-red-700 px-2 py-1 font-black text-white">
@@ -74,9 +86,16 @@ function Movies(props) {
             </div>)
 
   return (
-    <div className="mt-8">
-      <div>{ renderMoviesCount() }</div>
+    <div className="mt-8 ml-auto w-9/12">
+      <div className="text-left">{ renderMoviesCount() }</div>
       <div className="mt-4">{renderMoviesList()}</div>
+      <div className="flex justify-center mt-4">
+        <Pagination 
+          itemsCount={ movies.length } 
+          pageSize={ pageSize } 
+          currentPage={ currentPage }
+          onPageChange={ handlePageChange } />
+      </div>
     </div>
   );
 }

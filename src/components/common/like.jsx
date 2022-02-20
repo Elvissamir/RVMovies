@@ -5,11 +5,8 @@ function Likes (props) {
     const defaultClass = 'text-gray-800'
     let activeClass = defaultClass
 
-    if (props.liked)
-        activeClass = likedClass
-    else 
-        activeClass = defaultClass
-
+    activeClass = (props.liked)? likedClass:defaultClass
+    
     return <button onClick={ props.onClick }>
         <FontAwesomeIcon className={ activeClass } icon={'heart'} />
     </button>
