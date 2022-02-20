@@ -1,10 +1,12 @@
 import React from "react";
 import Likes from './common/like'
+import FilterList from "./filterList";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
+import { filterList } from '../utils/filterList';
 import { useState } from "react";
 
-function Movies(props) {
+function Movies() {
   const moviesArray = [
     { id: 0, title: "Movie 1", genre: "Action", numberInStock: 6, rate: 2.5, liked: false },
     { id: 1, title: "Movie 2", genre: "Romance", numberInStock: 4, rate: 2.5, liked: false},
@@ -13,11 +15,14 @@ function Movies(props) {
     { id: 4, title: "Movie 5", genre: "Action", numberInStock: 100, rate: 3, liked: false },
   ];
 
+  const availableGenreFilters = ['All', 'Action', 'Comedy', 'Romance', 'Adventure']
   const [ movies, setMovies ] = useState(moviesArray);
   const [ pageSize, setPageSize ] = useState(4)
   const [ currentPage, setCurrentPage ] = useState(1)
+  const [ currentFilter, setCurrentFilter ] = useState('All')
 
-  const movieList = paginate(movies, currentPage, pageSize)
+  const filteredList = filterList(movies, currentFilter)
+  const movieList = paginate(filteredList, currentPage, pageSize)
 
   const handleDelete = (movie) => {
     const m = movies.filter((item) => movie.id != item.id)
@@ -35,10 +40,15 @@ function Movies(props) {
     setCurrentPage(page)
   }   
 
+  const handleChangeGenreFilter = option => {
+    setCurrentFilter(option)
+    setCurrentPage(1)
+  }
+
   const renderMoviesCount = () => {
     const noMoviesMessage = "There are no movies to show";
-    const countMessage = `Showing ${movies.length} movies in the database`;
-    const content = movies.length === 0 ? noMoviesMessage : countMessage;
+    const countMessage = `Showing ${movieList.length} movies in the database`;
+    const content = movieList.length === 0 ? noMoviesMessage : countMessage;
 
     return <p>{ content }</p>;
   };
@@ -65,7 +75,7 @@ function Movies(props) {
                     <td>{ movie.rate }</td>
                     <td className="flex justify-center h-full">
                       <div className="flex p-2">
-                        <Likes liked={ movie.liked } onClick={ () => handleLike(movie) } />
+                        <Likes liked={ movie.liked } onLiked ={ () => handleLike(movie) } />
                       </div>
                     </td>
                     <td className="text-center">
@@ -86,15 +96,23 @@ function Movies(props) {
             </div>)
 
   return (
-    <div className="mt-8 ml-auto w-9/12">
-      <div className="text-left">{ renderMoviesCount() }</div>
-      <div className="mt-4">{renderMoviesList()}</div>
-      <div className="flex justify-center mt-4">
-        <Pagination 
-          itemsCount={ movies.length } 
-          pageSize={ pageSize } 
-          currentPage={ currentPage }
-          onPageChange={ handlePageChange } />
+    <div className="flex justify-between mt-8 w-full">
+      <div className="flex mt-1">
+        <FilterList 
+          onSelectFilter={ handleChangeGenreFilter }
+          filters={ availableGenreFilters } 
+          activeFilter={ currentFilter } />
+      </div>
+      <div className="flex flex-col w-9/12">
+        <div className="text-left">{ renderMoviesCount() }</div>
+        <div className="mt-4">{renderMoviesList()}</div>
+        <div className="flex justify-center mt-4">
+          <Pagination 
+            itemsCount={ filteredList.length } 
+            pageSize={ pageSize } 
+            currentPage={ currentPage }
+            onPageChange={ handlePageChange } />
+        </div>
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ function Pagination ({ itemsCount, pageSize, currentPage, onPageChange }) {
             pa.push(i)
         return pa
     }
+
     const pagesArray = createPagesArray(pagesCount)
 
     if (pagesCount === 1) return null

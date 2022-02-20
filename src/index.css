@@ -3,33 +3,71 @@
 @tailwind utilities;
 
 :root {
-  --pagination-links-border: 2px rgba(100, 100, 100, 0.5) solid
+  --borders: 2px rgba(100, 100, 100, 0.5) solid;
+  --active-color: rgba(0, 180, 250, 1)
 }
 
-/**/
+/* Pagination Styles */
 .pagination {
   @apply flex font-black
 }
 
 .pagination .pagination-item:first-child
 {
-  background-color: white;
   border: 0px;
-  border-left: var(--pagination-links-border);
-  border-top: var(--pagination-links-border);
-  border-bottom: var(--pagination-links-border);
+  border-left: var(--borders);
+  border-top: var(--borders);
+  border-bottom: var(--borders);
 }
 
 .pagination .pagination-item
 {
-  border: var(--pagination-links-border);
+  border: var(--borders);
 }
 
 .page-link {
   height: 100%;
   padding: 0.5rem 1rem;
+  font-weight: bolder;
 }
 
 .active-page {
-  @apply bg-cyan-500
+  background-color: var(--active-color);
+  color: white;
+}
+
+/* Filter List Styles */
+.filter-list {
+  @apply flex flex-col items-start
+}
+
+.filter-list .filter-option:first-child {
+  border: 0px;
+  border-top: var(--borders);
+  border-left: var(--borders);
+  border-right: var(--borders);
+}
+
+.filter-list .filter-option {
+  border-top: var(--borders);
+  border-left: var(--borders);
+  border-right: var(--borders);
+}
+
+.filter-list .filter-option:last-child {
+  border: 0px;
+  border-top: var(--borders);
+  border-bottom: var(--borders);
+  border-left: var(--borders);
+  border-right: var(--borders);
+}
+
+
+.filter-option {
+  @apply p-2 font-black w-full
+}
+
+.active-filter {
+  background-color: var(--active-color);
+  color: white;
 }
