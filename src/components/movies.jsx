@@ -17,7 +17,7 @@ function Movies(props) {
   const [ pageSize, setPageSize ] = useState(4)
   const [ currentPage, setCurrentPage ] = useState(1)
 
-  const movieList = paginate(movies)
+  const movieList = paginate(movies, currentPage, pageSize)
 
   const handleDelete = (movie) => {
     const m = movies.filter((item) => movie.id != item.id)

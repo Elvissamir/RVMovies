@@ -1,7 +1,6 @@
+import PropTypes from 'prop-types'
 
-function Pagination (props) {
-    const { itemsCount, pageSize, currentPage, onPageChange } = props
-
+function Pagination ({ itemsCount, pageSize, currentPage, onPageChange }) {
     const pagesCount = Math.ceil(itemsCount / pageSize)
     const createPagesArray = (pagesCount) => {
         const pa = []
@@ -26,6 +25,13 @@ function Pagination (props) {
             )}    
         </div>
     )
+}
+
+Pagination.propTypes = {
+    itemsCount: PropTypes.number,
+    pageSize: PropTypes.number,
+    currentPage: PropTypes.number,
+    onPageChange: PropTypes.func
 }
 
 export default Pagination
