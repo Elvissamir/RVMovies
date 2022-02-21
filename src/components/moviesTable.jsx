@@ -1,38 +1,22 @@
 import PropTypes from 'prop-types'
 import Likes from './common/like.jsx'
+import TableHeader from './common/tableHeader.jsx';
 
 function MoviesTable ({ movies, sortColumn, onLike, onDelete, onSort }) {
 
-    const properties = [
-        {id: 'Title', value: 'title'}, 
-        {id: 'Genre', value: 'genre'}, 
-        {id: 'Stock', value: 'numberInStock'}, 
-        {id: 'Rate', value: 'dailyRentalRate'}, 
-        {id: ' ', value: ''}]
-
-    const raiseSort = (path) => {
-        let order = 'asc'
-        if (path === sortColumn.path && sortColumn.order === 'asc')
-          order = 'desc'
-    
-        onSort({ path, order })
-    }
+    const columns = [
+        {label: 'Title', value: 'title'}, 
+        {label: 'Genre', value: 'genre'}, 
+        {label: 'Stock', value: 'numberInStock'}, 
+        {label: 'Rate', value: 'dailyRentalRate'}, 
+        {label: ' ', value: ''}]
 
     return (
         <table className="table-fixed w-full">
-          <thead>
-            <tr className="">
-              { properties.map(p => (
-                <th 
-                    key={ p.id } 
-                    onClick={ () => raiseSort(p.value) } 
-                    className="text-left">
-                        { p.id }
-                </th> ) 
-              )}
-              <th></th>
-            </tr>
-          </thead>
+          <TableHeader 
+            sortColumn={ sortColumn }
+            onSort={ onSort }
+            columns={ columns } />
           <tbody>
               { movies.map((movie, index) => (
                   <tr className="text-left" key={ index }>
