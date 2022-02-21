@@ -1,18 +1,13 @@
+import { Link } from "react-router-dom"
 
 function Nav () {
     const menuLinks = [
-        {url: '', name: 'Home'},
-        {url: '', name: 'Movies'},
-        {url: '', name: 'Rentals'},
-        {url: '', name: 'Customers'},
-        {url: '', name: 'Genres'},
+        {url: '/', name: 'Home'},
+        {url: '/movies', name: 'Movies'},
+        {url: '/rentals', name: 'Rentals'},
+        {url: '/customers', name: 'Customers'},
+        {url: '/genres', name: 'Genres'},
     ]
-
-    const renderMenuLinks = () => { 
-        return (
-            menuLinks.map(link => <li className="flex" key={link.name}><a className="mx-2 p-2" href={link.url}>{link.name}</a></li>)
-        )
-    }
 
     return (
         <nav className="bg-black">
@@ -20,7 +15,14 @@ function Nav () {
                 <div className="font-black">V MOVIES</div>
                 <div className="flex">
                     <ul className="flex">
-                        { renderMenuLinks() }
+                        {  menuLinks.map(link => 
+                            <li className="flex" key={ link.name }>
+                                <Link 
+                                    className="mx-2 p-2" 
+                                    to={ link.url }>
+                                        { link.name }
+                                </Link>
+                            </li>) }
                     </ul>
                 </div>
             </div>
