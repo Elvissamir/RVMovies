@@ -28,19 +28,3 @@ TableBody.propTypes = {
 }
 
 export default TableBody
-
-/*
-  <td>{ movie.title }</td>
-                    <td>{ movie.genre }</td>
-                    <td>{ movie.numberInStock }</td>
-                    <td>{ movie.dailyRentalRate }</td>
-                    <td className="flex justify-center h-full">
-                    <div className="flex p-2">
-                       
-                    </div>
-                    </td>
-                    <td className="text-center">
-                  
-                    </td>
-
-*/

@@ -1,7 +1,7 @@
+import React from 'react';
 import PropTypes from 'prop-types'
 import Likes from './common/like.jsx'
-import TableHeader from './common/tableHeader.jsx'
-import TableBody from './common/tableBody.jsx'
+import Table from './common/table.jsx'
 
 function MoviesTable ({ movies, sortColumn, onLike, onDelete, onSort }) {
     const columns = [
@@ -23,15 +23,11 @@ function MoviesTable ({ movies, sortColumn, onLike, onDelete, onSort }) {
     ]
 
     return (
-        <table className="table-fixed w-full">
-          <TableHeader 
-            sortColumn={ sortColumn }
+        <Table 
+            data={ movies }
             onSort={ onSort }
-            columns={ columns } />
-          <TableBody 
-            columns={ columns }
-            data={ movies } />
-        </table>
+            columns={ columns } 
+            sortColumn={ sortColumn } />
     );
 }
 

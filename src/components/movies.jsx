@@ -23,9 +23,12 @@ function Movies() {
   const [ currentFilter, setCurrentFilter ] = useState('All')
   const [ sortColumn, setSortColumn ] = useState({ path: 'title', order: 'asc' }) 
 
-  const filteredList = filterList(movies, currentFilter)
-  const sortedList = _.orderBy(filteredList, [sortColumn.path], [sortColumn.order])
-  const movieList = paginate(sortedList, currentPage, pageSize)
+  const getPagedData = () => {
+    const filteredList = filterList(movies, currentFilter)
+    const sortedList = _.orderBy(filteredList, [sortColumn.path], [sortColumn.order])
+    const movieList = paginate(sortedList, currentPage, pageSize)  
+    return { totalCount: filteredList.length, data: movieList }
+  }
 
   const handleDelete = (movie) => {
     const m = movies.filter((item) => movie.id != item.id)
@@ -52,17 +55,16 @@ function Movies() {
     setSortColumn(sortColumn)
   }
 
-  const renderMoviesCount = () => {
-    const noMoviesMessage = "There are no movies to show";
-    const countMessage = `Showing ${movieList.length} movies in the database`;
-    const content = movieList.length === 0 ? noMoviesMessage : countMessage;
+  const { totalCount, data } = getPagedData()
 
-    return <p>{ content }</p>;
+  const moviesCountMessage = () => {
+    const countMessage = `Showing ${totalCount} movies in the database`;
+    return <p>{ countMessage }</p>;
   };
 
   if (movies.length === 0)
     return  (<div className="mt-8">
-              <div>{ renderMoviesCount() }</div>
+              <div>There are no movies to show</div>
             </div>)
 
   return (
@@ -74,10 +76,10 @@ function Movies() {
           activeFilter={ currentFilter } />
       </div>
       <div className="flex flex-col w-9/12">
-        <div className="text-left">{ renderMoviesCount() }</div>
+        <div className="text-left">{ moviesCountMessage() }</div>
         <div className="mt-4">
           <MoviesTable 
-            movies={ movieList } 
+            movies={ data } 
             sortColumn={ sortColumn }
             onSort={ handleSort }
             onDelete={ handleDelete }
@@ -85,7 +87,7 @@ function Movies() {
         </div>
         <div className="flex justify-center mt-4">
           <Pagination 
-            itemsCount={ filteredList.length } 
+            itemsCount={ totalCount } 
             pageSize={ pageSize } 
             currentPage={ currentPage }
             onPageChange={ handlePageChange } />
