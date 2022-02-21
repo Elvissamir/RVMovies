@@ -12,15 +12,14 @@ function TableHeader ({ columns, sortColumn, onSort }) {
     return ( 
         <thead>
             <tr className="">
-            { columns.map(p => (
-                <th 
-                    key={ p.label } 
-                    onClick={ () => raiseSort(p.value) } 
-                    className="text-left">
-                        { p.label }
-                </th> ) 
-            )}
-            <th></th>
+                { columns.map((p, index) => (
+                    <th 
+                        key={ index } 
+                        onClick={ () => raiseSort(p.value) } 
+                        className="text-left">
+                            <p>{ p.label }</p>
+                    </th> 
+                 ))}
             </tr>
         </thead>)
 }
