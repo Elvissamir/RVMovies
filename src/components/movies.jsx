@@ -2,17 +2,18 @@ import React from "react";
 import MoviesTable from "./moviesTable";
 import FilterList from "./filterList";
 import Pagination from "./common/pagination";
+import _ from 'lodash'
 import { paginate } from "../utils/paginate";
 import { filterList } from '../utils/filterList';
 import { useState } from "react";
 
 function Movies() {
   const moviesArray = [
-    { id: 0, title: "Movie 1", genre: "Action", numberInStock: 6, rate: 2.5, liked: false },
-    { id: 1, title: "Movie 2", genre: "Romance", numberInStock: 4, rate: 2.5, liked: false},
-    { id: 2, title: "Movie 3", genre: "Adventure", numberInStock: 5, rate: 2.5, liked: false},
-    { id: 3, title: "Movie 4", genre: "Comedy", numberInStock: 10, rate: 1, liked: false},
-    { id: 4, title: "Movie 5", genre: "Action", numberInStock: 100, rate: 3, liked: false },
+    { id: 0, title: "Movie 1", genre: "Action", numberInStock: 6, dailyRentalRate: 2.5, liked: false },
+    { id: 1, title: "Movie 2", genre: "Romance", numberInStock: 4, dailyRentalRate: 2.5, liked: false},
+    { id: 2, title: "Movie 3", genre: "Adventure", numberInStock: 5, dailyRentalRate: 2.5, liked: false},
+    { id: 3, title: "Movie 4", genre: "Comedy", numberInStock: 10, dailyRentalRate: 1, liked: false},
+    { id: 4, title: "Movie 5", genre: "Action", numberInStock: 100, dailyRentalRate: 3, liked: false },
   ];
 
   const availableGenreFilters = ['All', 'Action', 'Comedy', 'Romance', 'Adventure']
@@ -20,9 +21,11 @@ function Movies() {
   const [ pageSize, setPageSize ] = useState(4)
   const [ currentPage, setCurrentPage ] = useState(1)
   const [ currentFilter, setCurrentFilter ] = useState('All')
+  const [ sortColumn, setSortColumn ] = useState({ path: 'title', order: 'asc' }) 
 
   const filteredList = filterList(movies, currentFilter)
-  const movieList = paginate(filteredList, currentPage, pageSize)
+  const sortedList = _.orderBy(filteredList, [sortColumn.path], [sortColumn.order])
+  const movieList = paginate(sortedList, currentPage, pageSize)
 
   const handleDelete = (movie) => {
     const m = movies.filter((item) => movie.id != item.id)
@@ -43,6 +46,10 @@ function Movies() {
   const handleChangeGenreFilter = option => {
     setCurrentFilter(option)
     setCurrentPage(1)
+  }
+
+  const handleSort = sortColumn => {
+    setSortColumn(sortColumn)
   }
 
   const renderMoviesCount = () => {
@@ -71,6 +78,8 @@ function Movies() {
         <div className="mt-4">
           <MoviesTable 
             movies={ movieList } 
+            sortColumn={ sortColumn }
+            onSort={ handleSort }
             onDelete={ handleDelete }
             onLike={ handleLike} />
         </div>

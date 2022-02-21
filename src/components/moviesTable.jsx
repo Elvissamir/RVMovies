@@ -1,15 +1,34 @@
 import PropTypes from 'prop-types'
 import Likes from './common/like.jsx'
 
-function MoviesTable ({ movies, onLike, onDelete }) {
+function MoviesTable ({ movies, sortColumn, onLike, onDelete, onSort }) {
 
-    const headers = ["Title", "Genre", "Stock", "Rate", " "];
+    const properties = [
+        {id: 'Title', value: 'title'}, 
+        {id: 'Genre', value: 'genre'}, 
+        {id: 'Stock', value: 'numberInStock'}, 
+        {id: 'Rate', value: 'dailyRentalRate'}, 
+        {id: ' ', value: ''}]
+
+    const raiseSort = (path) => {
+        let order = 'asc'
+        if (path === sortColumn.path && sortColumn.order === 'asc')
+          order = 'desc'
+    
+        onSort({ path, order })
+    }
+
     return (
         <table className="table-fixed w-full">
           <thead>
             <tr className="">
-              { headers.map(header => (
-                  <th key={ header } className="text-left">{header}</th> ) 
+              { properties.map(p => (
+                <th 
+                    key={ p.id } 
+                    onClick={ () => raiseSort(p.value) } 
+                    className="text-left">
+                        { p.id }
+                </th> ) 
               )}
               <th></th>
             </tr>
@@ -20,7 +39,7 @@ function MoviesTable ({ movies, onLike, onDelete }) {
                       <td>{ movie.title }</td>
                       <td>{ movie.genre }</td>
                       <td>{ movie.numberInStock }</td>
-                      <td>{ movie.rate }</td>
+                      <td>{ movie.dailyRentalRate }</td>
                       <td className="flex justify-center h-full">
                         <div className="flex p-2">
                           <Likes liked={ movie.liked } onLiked ={ () => onLike(movie) } />
@@ -40,8 +59,10 @@ function MoviesTable ({ movies, onLike, onDelete }) {
 
 MoviesTable.propTypes = {
     movies: PropTypes.array.isRequired,
+    sortColumn: PropTypes.object.isRequired,
     onLike: PropTypes.func.isRequired,
-    onDelete: PropTypes.func.isRequired
+    onDelete: PropTypes.func.isRequired,
+    onSort: PropTypes.func.isRequired
 }
 
 export default MoviesTable
