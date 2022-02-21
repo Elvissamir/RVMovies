@@ -1,5 +1,5 @@
 import React from "react";
-import Likes from './common/like'
+import MoviesTable from "./moviesTable";
 import FilterList from "./filterList";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
@@ -53,43 +53,6 @@ function Movies() {
     return <p>{ content }</p>;
   };
 
-  const renderMoviesList = () => {
-    const headers = ["Title", "Genre", "Stock", "Rate", " "];
-
-    return (
-      <table className="table-fixed w-full">
-        <thead>
-          <tr className="">
-            { headers.map(header => (
-                <th key={ header } className="text-left">{header}</th> ) 
-            )}
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-            { movieList.map((movie, index) => (
-                <tr className="text-left" key={ index }>
-                    <td>{ movie.title }</td>
-                    <td>{ movie.genre }</td>
-                    <td>{ movie.numberInStock }</td>
-                    <td>{ movie.rate }</td>
-                    <td className="flex justify-center h-full">
-                      <div className="flex p-2">
-                        <Likes liked={ movie.liked } onLiked ={ () => handleLike(movie) } />
-                      </div>
-                    </td>
-                    <td className="text-center">
-                      <button onClick={ () => handleDelete(movie) } className="bg-red-700 px-2 py-1 font-black text-white">
-                        Delete
-                      </button>
-                    </td>
-                </tr>
-            )) }
-        </tbody>
-      </table>
-    );
-  };
-
   if (movies.length === 0)
     return  (<div className="mt-8">
               <div>{ renderMoviesCount() }</div>
@@ -105,7 +68,12 @@ function Movies() {
       </div>
       <div className="flex flex-col w-9/12">
         <div className="text-left">{ renderMoviesCount() }</div>
-        <div className="mt-4">{renderMoviesList()}</div>
+        <div className="mt-4">
+          <MoviesTable 
+            movies={ movieList } 
+            onDelete={ handleDelete }
+            onLike={ handleLike} />
+        </div>
         <div className="flex justify-center mt-4">
           <Pagination 
             itemsCount={ filteredList.length } 
