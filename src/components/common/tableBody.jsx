@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
 function TableBody ({ data, columns }) {
     const renderCell = (item, column) => {
@@ -13,7 +14,7 @@ function TableBody ({ data, columns }) {
                 <tr className="text-left" key={ itemIndex }>
                     { columns.map((column, columnIndex) => 
                         <td key={ columnIndex }>
-                            { renderCell(item, column) }
+                            { renderCell(item, column)}
                         </td>    
                     )}
                 </tr>

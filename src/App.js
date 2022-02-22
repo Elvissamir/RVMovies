@@ -5,6 +5,7 @@ import Movies from './components/movies.jsx'
 import Customers from './components/customers';
 import Rentals from './components/rentals';
 import NotFound from './components/notFound';
+import MovieForm from './components/movieForm';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <div className='app-content-container min-h-screen w-10/12 mx-auto px-2'>
           <Routes>
             <Route path='/movies' element={<Movies />}></Route>
+            <Route path='/movies/:id' element={<MovieForm />}></Route>
             <Route path='/customers' element={ <Customers /> }></Route>
             <Route path='/rentals' element={ <Rentals /> }></Route>
             <Route path='/' element={ <Movies /> }></Route>
