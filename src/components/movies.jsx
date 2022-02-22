@@ -7,7 +7,7 @@ import { paginate } from "../utils/paginate";
 import { filterList } from '../utils/filterList';
 import { useState } from "react";
 
-function Movies() {
+function Movies(props) {
   const moviesArray = [
     { id: 0, title: "Movie 1", genre: "Action", numberInStock: 6, dailyRentalRate: 2.5, liked: false },
     { id: 1, title: "Movie 2", genre: "Romance", numberInStock: 4, dailyRentalRate: 2.5, liked: false},

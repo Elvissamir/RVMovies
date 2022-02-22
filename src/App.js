@@ -15,10 +15,11 @@ function App() {
         </div>
         <div className='app-content-container min-h-screen w-10/12 mx-auto px-2'>
           <Routes>
-            <Route path='/movies' element={ <Movies /> }></Route>
+            <Route path='/movies' element={<Movies />}></Route>
             <Route path='/customers' element={ <Customers /> }></Route>
             <Route path='/rentals' element={ <Rentals /> }></Route>
-            <Route path='/notFound' element={ <NotFound /> }></Route>
+            <Route path='/' element={ <Movies /> }></Route>
+            <Route path='*' element={ <NotFound /> }></Route>
           </Routes>
         </div>
         <div className='app-footer'>

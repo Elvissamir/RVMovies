@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 
 function Nav () {
     const menuLinks = [
@@ -10,18 +10,18 @@ function Nav () {
     ]
 
     return (
-        <nav className="bg-black">
-            <div className="flex p-2 justify-between items-center text-white mx-auto w-10/12">
+        <nav className="nav">
+            <div className="nav-content">
                 <div className="font-black">V MOVIES</div>
-                <div className="flex">
-                    <ul className="flex">
+                <div className="menu-wrapper">
+                    <ul className="menu">
                         {  menuLinks.map(link => 
                             <li className="flex" key={ link.name }>
-                                <Link 
-                                    className="mx-2 p-2" 
+                                <NavLink 
+                                    className="menu-link" 
                                     to={ link.url }>
                                         { link.name }
-                                </Link>
+                                </NavLink>
                             </li>) }
                     </ul>
                 </div>
