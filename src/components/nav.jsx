@@ -6,7 +6,7 @@ function Nav () {
         {url: '/movies', name: 'Movies'},
         {url: '/rentals', name: 'Rentals'},
         {url: '/customers', name: 'Customers'},
-        {url: '/genres', name: 'Genres'},
+        {url: '/login', name: 'Login'}
     ]
 
     return (

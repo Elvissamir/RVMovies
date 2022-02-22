@@ -1,0 +1,12 @@
+
+.form {
+    @apply flex flex-col bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 mt-4
+}
+
+.form .input {
+    @apply border-2 border-blue-800
+}
+
+.form input:focus {
+    box-shadow: 0px 0px 12px rgba(0, 50, 200, 0.8);
+}
