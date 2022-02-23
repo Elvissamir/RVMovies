@@ -7,6 +7,7 @@ import Rentals from './components/rentals';
 import NotFound from './components/notFound';
 import MovieForm from './components/movieForm';
 import LoginForm from './components/loginForm';
+import RegistrationForm from './components/registrationForm';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <div className='app-content-container min-h-screen w-10/12 mx-auto px-2'>
           <Routes>
             <Route path='/login' element={<LoginForm />}></Route>
+            <Route path='/register' element={<RegistrationForm/>}></Route> 
             <Route path='/movies' element={<Movies />}></Route>
             <Route path='/movies/:id' element={<MovieForm />}></Route>
             <Route path='/customers' element={ <Customers /> }></Route>

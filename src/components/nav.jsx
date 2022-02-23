@@ -2,11 +2,11 @@ import { NavLink } from "react-router-dom"
 
 function Nav () {
     const menuLinks = [
-        {url: '/', name: 'Home'},
         {url: '/movies', name: 'Movies'},
         {url: '/rentals', name: 'Rentals'},
         {url: '/customers', name: 'Customers'},
-        {url: '/login', name: 'Login'}
+        {url: '/login', name: 'Login'},
+        {url: '/register', name: 'Register'}
     ]
 
     return (
