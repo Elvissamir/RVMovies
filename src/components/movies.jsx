@@ -6,6 +6,7 @@ import _ from 'lodash'
 import { paginate } from "../utils/paginate";
 import { filterList } from '../utils/filterList';
 import { useState } from "react";
+import { Link } from 'react-router-dom';
 
 function Movies(props) {
   const moviesArray = [
@@ -69,14 +70,17 @@ function Movies(props) {
 
   return (
     <div className="flex justify-between mt-8 w-full">
-      <div className="flex mt-1">
+      <div className="flex">
         <FilterList 
           onSelectFilter={ handleChangeGenreFilter }
           filters={ availableGenreFilters } 
           activeFilter={ currentFilter } />
       </div>
       <div className="flex flex-col w-9/12">
-        <div className="text-left">{ moviesCountMessage() }</div>
+        <div className="flex">
+          <Link className="button" to='/movies/new'>New Movie</Link>
+        </div>
+        <div className="mt-4 text-left">{ moviesCountMessage() }</div>
         <div className="mt-4">
           <MoviesTable 
             movies={ data } 

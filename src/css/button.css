@@ -1,0 +1,6 @@
+
+.button {
+    background-color: var(--active-color);
+
+    @apply text-white p-2 font-black rounded-md shadow-md
+}

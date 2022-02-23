@@ -22,7 +22,7 @@ function RegistrationForm () {
     } = useForm(dataInit, dataSchema)
 
     const handleSubmit = () => {
-
+        
     }
 
     return (
