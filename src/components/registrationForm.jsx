@@ -9,9 +9,9 @@ function RegistrationForm () {
     }
 
     const dataSchema = {
-        username: Joi.string().required().label('Username'),
+        username: Joi.email().string().required().label('Username'),
         name: Joi.string().required().label('Name'),
-        password: Joi.string().required().label('Password')
+        password: Joi.string().min(5).required().label('Password')
     }
 
     const {

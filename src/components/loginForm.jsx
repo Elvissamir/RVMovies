@@ -33,14 +33,14 @@ function LoginForm () {
                         Username
                     </label>
                     <input onChange={ handleChange } className="form-input" value={ formData.username } id="username" type='text' />
-                    { formErrors.username && <p className="text-red-500 text-xs italic">{ formErrors.username }</p> }
+                    { formErrors.username && <p className="form-error">{ formErrors.username }</p> }
                 </div>
                 <div className="form-field">
                     <label className="form-label" htmlFor="password">
                         Password
                     </label>
                     <input onChange={ handleChange } value={ formData.password } className="form-input" id="password" type="password" />
-                    { formErrors.password && <p className="text-red-500 text-xs italic">{ formErrors.password }</p> }
+                    { formErrors.password && <p className="form-error">{ formErrors.password }</p> }
                 </div>
                 <div className="form-footer">
                     <button disabled={ validate() } className="form-button">
