@@ -1,4 +1,4 @@
-import Joi from 'joi-browser'
+import Joi from 'joi'
 import { useState } from "react"
 
 function useForm (dataInit, dataSchema) {
@@ -6,8 +6,9 @@ function useForm (dataInit, dataSchema) {
     const [ formErrors, setFormErrors ] = useState({})
 
     const validate = () => {
+        const schema = Joi.object(dataSchema)
         const options = { abortEarly: false }
-        const { error } = Joi.validate(formData, dataSchema, options)
+        const { error } = schema.validate(formData, options)
     
         if (!error) return null
         
@@ -18,8 +19,8 @@ function useForm (dataInit, dataSchema) {
 
     const validateProperty = ({id, value}) => {
         const obj = { [id]: value }
-        const schema = { [id]: dataSchema[id] }
-        const { error } = Joi.validate(obj, schema)
+        const schema = Joi.object({ [id]: dataSchema[id] })
+        const { error } = schema.validate(obj)
     
         return (!error) ? null:error.details[0].message
     }

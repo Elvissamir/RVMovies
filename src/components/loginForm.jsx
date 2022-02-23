@@ -1,4 +1,4 @@
-import Joi from 'joi-browser'
+import Joi from 'joi'
 import { useForm } from './hooks/useForm'
 
 function LoginForm () {

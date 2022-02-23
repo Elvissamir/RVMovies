@@ -1,4 +1,4 @@
-import Joi from 'joi-browser'
+import Joi from 'joi'
 import { useForm } from "./hooks/useForm"
 
 function RegistrationForm () {
@@ -9,7 +9,7 @@ function RegistrationForm () {
     }
 
     const dataSchema = {
-        username: Joi.email().string().required().label('Username'),
+        username: Joi.string().required().email({ tlds: {allow: false} }).label('Username'),
         name: Joi.string().required().label('Name'),
         password: Joi.string().min(5).required().label('Password')
     }
