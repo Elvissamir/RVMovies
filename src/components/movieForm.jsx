@@ -3,22 +3,25 @@ import Joi from 'joi';
 
 
 function MovieForm () {
-    
     const dataSchema = {
         title: Joi.string().max(255).required().label('Title'),
-        genre: Joi.string().required().label('Genre'),
+        genreId: Joi.string().required().label('Genre'),
         numberInStock: Joi.number().min(0).max(255).required().label('In Stock'),
         dailyRentalRate: Joi.number().min(0).max(10).required().label('Rate')
     }
 
     const dataInit = {
         title: '',
-        genre: '',
+        genreId: 'abc2',
         numberInStock: '',
         dailyRentalRate: ''
     }
 
-    const genreOptions = ['Romance', 'Action', 'Adventure']
+    const genreOptions = [
+        { name: 'Romance', id: 'abc1'},
+        { name: 'Action', id: 'abc2'},
+        { name: 'Adventure', id: 'abc3'}
+    ]
 
     const {
         formData,
@@ -29,6 +32,16 @@ function MovieForm () {
 
     const handleSubmit = () => {
 
+    }
+
+    const mapToViewModel = movie => {
+        return {
+            _id: movie._id,
+            title: movie.title,
+            genreId: movie.genre._id,
+            numberInStock: movie.numberInStock,
+            dailyRentalRate: movie.dailyRentalRate
+        }
     }
     
     return (
@@ -46,8 +59,8 @@ function MovieForm () {
                     <label className="form-label" htmlFor="genre">
                         Genre
                     </label>
-                    <select className="w-full border bg-white py-3 px-4 pr-8 rounded" name="genre" id="genre">
-                        { genreOptions.map(genre => <option key={genre} value={ genre }>{genre}</option>) }
+                    <select onChange={ handleChange } className="form-select" value={ formData.genreId } name="genre" id="genreId">
+                        { genreOptions.map(genre => <option key={genre.id} value={ genre.id }>{ genre.name }</option>) }
                     </select>
                     { formErrors.genre && <p className="form-error">{ formErrors.genre }</p> }
                 </div>
@@ -72,8 +85,7 @@ function MovieForm () {
                 </div>
             </form>
         </div>
-    )
-    
+    )   
 }
 
 export default MovieForm
