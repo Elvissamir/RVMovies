@@ -23,7 +23,7 @@
 }
 
 .form-input {
-    @apply border border-gray-200 py-1 shadow-md
+    @apply border border-gray-200 py-1 px-2 shadow-md
 }
 
 .form .form-input:focus {

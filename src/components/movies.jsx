@@ -7,14 +7,15 @@ import { paginate } from "../utils/paginate";
 import { filterList } from '../utils/filterList';
 import { useState } from "react";
 import { Link } from 'react-router-dom';
+import SearchBox from './common/searchBox';
 
 function Movies(props) {
   const moviesArray = [
-    { id: 0, title: "Movie 1", genre: "Action", numberInStock: 6, dailyRentalRate: 2.5, liked: false },
-    { id: 1, title: "Movie 2", genre: "Romance", numberInStock: 4, dailyRentalRate: 2.5, liked: false},
-    { id: 2, title: "Movie 3", genre: "Adventure", numberInStock: 5, dailyRentalRate: 2.5, liked: false},
-    { id: 3, title: "Movie 4", genre: "Comedy", numberInStock: 10, dailyRentalRate: 1, liked: false},
-    { id: 4, title: "Movie 5", genre: "Action", numberInStock: 100, dailyRentalRate: 3, liked: false },
+    { id: 0, title: "Troy", genre: "Action", numberInStock: 6, dailyRentalRate: 2.5, liked: false },
+    { id: 1, title: "Kingdom of Heaven", genre: "Romance", numberInStock: 4, dailyRentalRate: 2.5, liked: false},
+    { id: 2, title: "Gladiator", genre: "Adventure", numberInStock: 5, dailyRentalRate: 2.5, liked: false},
+    { id: 3, title: "Outlaw King", genre: "Comedy", numberInStock: 10, dailyRentalRate: 1, liked: false},
+    { id: 4, title: "King Arthur", genre: "Action", numberInStock: 100, dailyRentalRate: 3, liked: false },
   ];
 
   const availableGenreFilters = ['All', 'Action', 'Comedy', 'Romance', 'Adventure']
@@ -23,13 +24,28 @@ function Movies(props) {
   const [ currentPage, setCurrentPage ] = useState(1)
   const [ currentFilter, setCurrentFilter ] = useState('All')
   const [ sortColumn, setSortColumn ] = useState({ path: 'title', order: 'asc' }) 
+  const [ searchQuery, setSearchQuery ] = useState('')
+
+  const search = (query, array) => {
+    return array.filter(item => item.title.toLowerCase().startsWith(query.toLowerCase()))
+  }
 
   const getPagedData = () => {
-    const filteredList = filterList(movies, currentFilter)
-    const sortedList = _.orderBy(filteredList, [sortColumn.path], [sortColumn.order])
+    let list = []
+
+    if (currentFilter !== 'none')
+      list = filterList(movies, currentFilter)
+    else {
+      list = search(searchQuery, movies)
+    }
+
+    const sortedList = _.orderBy(list, [sortColumn.path], [sortColumn.order])
     const movieList = paginate(sortedList, currentPage, pageSize)  
-    return { totalCount: filteredList.length, data: movieList }
+
+    return { totalCount: list.length, data: movieList }
   }
+ 
+  const { data, totalCount } = getPagedData()
 
   const handleDelete = (movie) => {
     const m = movies.filter((item) => movie.id != item.id)
@@ -56,7 +72,11 @@ function Movies(props) {
     setSortColumn(sortColumn)
   }
 
-  const { totalCount, data } = getPagedData()
+  const handleSearch = ({target}) => {
+    setCurrentFilter('none')
+    setCurrentPage(1)
+    setSearchQuery(target.value)
+  }
 
   const moviesCountMessage = () => {
     const countMessage = `Showing ${totalCount} movies in the database`;
@@ -79,6 +99,9 @@ function Movies(props) {
       <div className="flex flex-col w-9/12">
         <div className="flex">
           <Link className="button" to='/movies/new'>New Movie</Link>
+        </div>
+        <div className="flex mt-4">
+          <SearchBox query={ searchQuery } onChange={ handleSearch } />
         </div>
         <div className="mt-4 text-left">{ moviesCountMessage() }</div>
         <div className="mt-4">
