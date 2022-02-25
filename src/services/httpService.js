@@ -1,19 +1,20 @@
 import axios from 'axios';
+import { toast } from 'react-toastify'
 
-axios.interceptors.response.use(null, (error) => {
+axios.interceptors.response.use(response => response, (error) => {
     const expectedError = error.response && error.response.status >= 400 && error.response.status < 500;
   
     if (!expectedError) {
         console.log("Logging the error", error)
-        alert("An unexpected error ocurred.")
+        toast.error("An unexpected error ocurred.")
     }
     
-    return Promise.reject;
-  });
+    return Promise.reject(error);
+});
 
 export default {
     get: axios.get, 
     post: axios.post,
     put: axios.put,
-    delte: axios.delete
+    delete: axios.delete
 }

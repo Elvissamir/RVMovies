@@ -46,7 +46,7 @@ function Post() {
     setPosts(copy);
 
     try {
-      await httpService.delete(`${apiEndpoint}/${post.id}`);
+      await httpService.delete(`s${apiEndpoint}/${post.id}`);
     } catch (ex) {
       if (ex.response && ex.response.status === 404)
         alert("This post has already been deleted");
@@ -57,35 +57,33 @@ function Post() {
 
   return (
     <div className="mt-12">
-      <div>
-        <button onClick={handleAdd} className="button text-white bg-blue-500">
-          Add
-        </button>
-      </div>
-      <ul className="mt-4">
-        {posts.map((post, index) => (
-          <li
-            key={index}
-            className="flex justify-between mt-2 border p-2 border-blue-400"
-          >
-            <p>{post.title.slice(0, 50)}</p>
-            <div className="flex">
-              <button
-                onClick={() => handleUpdate(post)}
-                className="button text-white bg-green-500"
-              >
-                Update
-              </button>
-              <button
-                onClick={() => handleDelete(post)}
-                className="button text-white bg-red-500 ml-2"
-              >
-                Delete
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
+        <ToastContainer />  
+        <div>
+            <button onClick={handleAdd} className="button text-white bg-blue-500">
+            Add
+            </button>
+        </div>
+        <ul className="mt-4">
+            {posts.map((post, index) => (
+            <li
+                key={index}
+                className="flex justify-between mt-2 border p-2 border-blue-400">
+                <p>{post.title.slice(0, 50)}</p>
+                <div className="flex">
+                <button
+                    onClick={() => handleUpdate(post)}
+                    className="button text-white bg-green-500">
+                    Update
+                </button>
+                <button
+                    onClick={() => handleDelete(post)}
+                    className="button text-white bg-red-500 ml-2">
+                    Delete
+                </button>
+                </div>
+            </li>
+            ))}
+        </ul>
     </div>
   );
 }
