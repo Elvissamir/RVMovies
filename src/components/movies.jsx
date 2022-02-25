@@ -48,7 +48,7 @@ function Movies() {
   const { data, totalCount } = getPagedData()
 
   const handleDelete = (movie) => {
-    const m = movies.filter((item) => movie.id != item.id)
+    const m = movies.filter((item) => movie.id !== item.id)
     setMovies(m) 
   }
 

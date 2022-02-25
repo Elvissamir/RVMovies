@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
 
 function TableBody ({ data, columns }) {
     const renderCell = (item, column) => {

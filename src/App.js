@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
+import Post from './components/post'
 import Nav from './components/nav'
 import Footer from './components/footer.jsx'
 import Movies from './components/movies.jsx'
@@ -9,6 +10,18 @@ import MovieForm from './components/movieForm';
 import LoginForm from './components/loginForm';
 import RegistrationForm from './components/registrationForm';
 
+// Axios Interceptor for Unexpected Errors
+axios.interceptors.response.use(null, (error) => {
+  const expectedError = error.response && error.response.status >= 400 && error.response.status < 500;
+
+  if (!expectedError) {
+      console.log("Logging the error", error)
+      alert("An unexpected error ocurred.")
+  }
+  
+  return Promise.reject;
+});
+
 function App() {
   return (
     <div className="App">
@@ -18,6 +31,7 @@ function App() {
         </div>
         <div className='app-content-container min-h-screen w-10/12 mx-auto px-2'>
           <Routes>
+            <Route path='/post' element={<Post />}></Route>
             <Route path='/login' element={<LoginForm />}></Route>
             <Route path='/register' element={<RegistrationForm/>}></Route> 
             <Route path='/movies' element={<Movies />}></Route>
