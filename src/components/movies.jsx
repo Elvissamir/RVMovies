@@ -9,7 +9,7 @@ import { useState } from "react";
 import { Link } from 'react-router-dom';
 import SearchBox from './common/searchBox';
 
-function Movies(props) {
+function Movies() {
   const moviesArray = [
     { id: 0, title: "Troy", genre: "Action", numberInStock: 6, dailyRentalRate: 2.5, liked: false },
     { id: 1, title: "Kingdom of Heaven", genre: "Romance", numberInStock: 4, dailyRentalRate: 2.5, liked: false},
