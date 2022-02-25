@@ -9,6 +9,7 @@ import NotFound from './components/notFound';
 import MovieForm from './components/movieForm';
 import LoginForm from './components/loginForm';
 import RegistrationForm from './components/registrationForm';
+import 'react-toastify/dist/ReactToastify.css'
 
 function App() {
   return (
