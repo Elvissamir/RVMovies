@@ -1,4 +1,4 @@
-import axios from "axios";
+import httpService from '../services/httpService'
 import { useEffect } from "react";
 import { useState } from "react";
 
@@ -9,20 +9,16 @@ function Post() {
 
   useEffect(() => {
     async function getPosts() {
-      const result = await axios.get(`${apiEndpoint}`);
+      const result = await httpService.get(`${apiEndpoint}`);
       setPosts(result.data);
     }
 
-    try {
-      getPosts();
-    } catch (err) {
-      console.log(err);
-    }
+    getPosts();
   }, []);
 
   const handleAdd = async () => {
     const obj = { title: "a", body: "b" };
-    const { data: post } = await axios.post(`${apiEndpoint}`, obj);
+    const { data: post } = await httpService.post(`${apiEndpoint}`, obj);
 
     const newArray = [post, ...posts];
     setPosts(newArray);
@@ -30,7 +26,7 @@ function Post() {
 
   const handleUpdate = async (post) => {
     post.title = "UPDATED";
-    const { data: updatedPost } = await axios.put(
+    const { data: updatedPost } = await httpService.put(
       `${apiEndpoint}/${post.id}`,
       post
     );
@@ -49,7 +45,7 @@ function Post() {
     setPosts(copy);
 
     try {
-      await axios.delete(`${apiEndpoint}/${post.id}`);
+      await httpService.delete(`${apiEndpoint}/${post.id}`);
     } catch (ex) {
       if (ex.response && ex.response.status === 404)
         alert("This post has already been deleted");
