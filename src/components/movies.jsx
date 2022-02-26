@@ -13,10 +13,11 @@ import MoviesTable from "./moviesTable"
 import FilterList from "./filterList"
 import Pagination from "./common/pagination"
 import SearchBox from './common/searchBox'
+import { toast } from 'react-toastify';
 
 function Movies() {
 
-  const [genreFilters, setGenreFilters] = useState([])
+  const [ genreFilters, setGenreFilters ] = useState([])
   const [ movies, setMovies ] = useState([]);
   const [ pageSize, setPageSize ] = useState(4)
   const [ currentPage, setCurrentPage ] = useState(1)
@@ -27,12 +28,13 @@ function Movies() {
   useEffect(() => {
     const fetchGenres = async () => {
       const allOption = { _id: 1, name: 'All' }
-      const genres = await getGenres()
-      setGenreFilters([allOption, ...genres]) 
+      const { data } = await getGenres()
+      const genres = [allOption, ...data]
+      setGenreFilters(genres) 
     }
 
     const fetchMovies = async () => {
-      const movies = await getMovies()
+      const { data:movies } = await getMovies()
       setMovies(movies)
     }
 
@@ -63,10 +65,19 @@ function Movies() {
   const { data, totalCount } = getPagedData()
 
   const handleDelete = async (movie) => {
+    const originalMovies = movies
     const m = movies.filter((item) => movie._id !== item._id)
     setMovies(m) 
+ 
+    try {
+      await deleteMovieById(movie._id)
+    }
+    catch (ex) {
+      if (ex.response && ex.response.status === 404)
+        toast.error(`${ex.response.status} ${ex.response.data}`)
 
-    await deleteMovieById(movie._id)
+      setMovies(originalMovies)
+    }
   }
 
   const handleLike = (movie) => {

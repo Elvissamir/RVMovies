@@ -1,10 +1,10 @@
 import httpService from './httpService'
+import config from '../config.json'
 
-const genresEndpoint = 'http://localhost:3000/api/genres'
+const genresEndpoint = `${config.apiUrl}/genres`
 
-async function getGenres () {
-    const { data: genres } = await httpService.get(genresEndpoint)
-    return genres
+function getGenres () {
+    return httpService.get(genresEndpoint)
 }
 
 export {

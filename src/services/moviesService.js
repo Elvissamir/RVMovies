@@ -1,15 +1,14 @@
 import httpService from "./httpService"
+import config from '../config.json'
 
-const moviesEndpoint = 'http://localhost:3000/api/movies'
+const moviesEndpoint = `${config.apiUrl}/movies`
 
-async function getMovies () {
-    const { data: movies } = await httpService.get(moviesEndpoint)
-    return movies
+function getMovies () {
+    return httpService.get(moviesEndpoint)
 }
 
-async function deleteMovieById (id) {
-    const { data: movie } = await httpService.delete(`${moviesEndpoint}/${id}`)
-    return movie
+function deleteMovieById (id) {
+    return httpService.delete(`${moviesEndpoint}/${id}`)
 }
 
 export {
