@@ -1,9 +1,9 @@
 import httpService from './httpService'
 
-const apiEndpoint = 'http://localhost:3000/api/genres'
+const genresEndpoint = 'http://localhost:3000/api/genres'
 
 async function getGenres () {
-    const genres = await httpService.get(apiEndpoint)
+    const { data: genres } = await httpService.get(genresEndpoint)
     return genres
 }
 

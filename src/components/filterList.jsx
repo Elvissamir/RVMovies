@@ -5,10 +5,10 @@ function FilterList ({ filters, activeFilter, onSelectFilter}) {
         <div className='filter-list'>
             { filters.map(option => 
                 <button 
-                    onClick={ () => onSelectFilter(option) }
-                    key={ option } 
-                    className={ option === activeFilter? 'active-filter filter-option': 'filter-option' } >
-                        { option }
+                    onClick={ () => onSelectFilter(option.name) }
+                    key={ option._id } 
+                    className={ option.name === activeFilter? 'active-filter filter-option': 'filter-option' } >
+                        { option.name }
                 </button>
             )}
         </div>

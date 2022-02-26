@@ -1,17 +1,18 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"
 import _ from 'lodash'
 // Services
-import { getGenres } from "../services/genresService";
+import { getGenres } from "../services/genresService"
+import { getMovies, deleteMovieById } from '../services/moviesService'
 // Utils
-import { paginate } from "../utils/paginate";
-import { filterList } from '../utils/filterList';
+import { paginate } from "../utils/paginate"
+import { filterList } from '../utils/filterList'
 // Components
-import { Link } from 'react-router-dom';
-import MoviesTable from "./moviesTable";
-import FilterList from "./filterList";
-import Pagination from "./common/pagination";
-import SearchBox from './common/searchBox';
+import { Link } from 'react-router-dom'
+import MoviesTable from "./moviesTable"
+import FilterList from "./filterList"
+import Pagination from "./common/pagination"
+import SearchBox from './common/searchBox'
 
 function Movies() {
 
@@ -24,13 +25,23 @@ function Movies() {
   const [ searchQuery, setSearchQuery ] = useState('')
 
   useEffect(() => {
-    let genres = getGenres()
-    console.log(genres)
-    // genres = ['All', ...genres]
-    // setGenreFilters(genres)
-  })
+    const fetchGenres = async () => {
+      const allOption = { _id: 1, name: 'All' }
+      const genres = await getGenres()
+      setGenreFilters([allOption, ...genres]) 
+    }
+
+    const fetchMovies = async () => {
+      const movies = await getMovies()
+      setMovies(movies)
+    }
+
+    fetchGenres()
+    fetchMovies()
+  }, [])
 
   const search = (query, array) => {
+    console.log('Search')
     return array.filter(item => item.title.toLowerCase().startsWith(query.toLowerCase()))
   }
 
@@ -51,9 +62,11 @@ function Movies() {
  
   const { data, totalCount } = getPagedData()
 
-  const handleDelete = (movie) => {
-    const m = movies.filter((item) => movie.id !== item.id)
+  const handleDelete = async (movie) => {
+    const m = movies.filter((item) => movie._id !== item._id)
     setMovies(m) 
+
+    await deleteMovieById(movie._id)
   }
 
   const handleLike = (movie) => {
@@ -96,9 +109,9 @@ function Movies() {
     <div className="flex justify-between mt-8 w-full">
       <div className="flex">
         <FilterList 
+          activeFilter={ currentFilter }
           onSelectFilter={ handleChangeGenreFilter }
-          filters={ genreFilters } 
-          activeFilter={ currentFilter } />
+          filters={ genreFilters } />
       </div>
       <div className="flex flex-col w-9/12">
         <div className="flex">
@@ -111,10 +124,10 @@ function Movies() {
         <div className="mt-4">
           <MoviesTable 
             movies={ data } 
-            sortColumn={ sortColumn }
             onSort={ handleSort }
+            onLike={ handleLike }
             onDelete={ handleDelete }
-            onLike={ handleLike} />
+            sortColumn={ sortColumn } />
         </div>
         <div className="flex justify-center mt-4">
           <Pagination 

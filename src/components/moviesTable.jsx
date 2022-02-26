@@ -6,25 +6,25 @@ import { Link } from 'react-router-dom';
 
 function MoviesTable ({ movies, sortColumn, onLike, onDelete, onSort }) {
     const columns = [
-        {label: 
-            'Title', 
+        {
+            label: 'Title', 
             value: 'title', 
             content: movie => 
-                <Link className='text-blue-800 underline' to={`/movies/${movie.id}`}>
+                <Link key={ movie._id } className='text-blue-800 underline' to={`/movies/${movie._id}`}>
                     { movie.title }
                 </Link>
-        }, 
-        {label: 'Genre', value: 'genre'}, 
+        },
+        {
+            label: 'Genres', 
+            value: 'genre', 
+            content: movie => movie.genres.map(genre => <p key={ genre._id }>{ genre.name }</p>)
+        },
         {label: 'Stock', value: 'numberInStock'}, 
         {label: 'Rate', value: 'dailyRentalRate'}, 
         {
-            key: 'like', 
-            content: movie => <Likes liked={ movie.liked } onLiked ={ () => onLike(movie) } />
-        },
-        {
             key: 'delete', 
             content: movie => 
-                <button onClick={ () => onDelete(movie) } className="bg-red-700 px-2 py-1 font-black text-white">
+                <button key={ movie._id } onClick={ () => onDelete(movie) } className="bg-red-700 px-2 py-1 font-black text-white">
                     Delete
                 </button>
         }
