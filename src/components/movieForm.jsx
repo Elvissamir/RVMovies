@@ -1,34 +1,62 @@
+import React from "react";
 import { useForm } from "./hooks/useForm"
 import Joi from 'joi';
+import { useState, useEffect } from 'react';
+import { getGenres } from "../services/genresService";
+import { getMovieById } from '../services/moviesService'
+import { useParams } from "react-router-dom";
+import { toast } from 'react-toastify';
 
+const dataSchema = {
+    title: Joi.string().max(255).required().label('Title'),
+    genreId: Joi.string().required().label('Genre'),
+    numberInStock: Joi.number().min(0).max(255).required().label('In Stock'),
+    dailyRentalRate: Joi.number().min(0).max(10).required().label('Rate')
+}
+
+const dataInit = {
+    title: '',
+    genreIds: [],
+    numberInStock: 0,
+    dailyRentalRate: 0
+}
 
 function MovieForm () {
-    const dataSchema = {
-        title: Joi.string().max(255).required().label('Title'),
-        genreId: Joi.string().required().label('Genre'),
-        numberInStock: Joi.number().min(0).max(255).required().label('In Stock'),
-        dailyRentalRate: Joi.number().min(0).max(10).required().label('Rate')
-    }
-
-    const dataInit = {
-        title: '',
-        genreId: 'abc2',
-        numberInStock: '',
-        dailyRentalRate: ''
-    }
-
-    const genreOptions = [
-        { name: 'Romance', id: 'abc1'},
-        { name: 'Action', id: 'abc2'},
-        { name: 'Adventure', id: 'abc3'}
-    ]
+    const params = useParams()
+    const [ genreOptions, setGenreOptions ] = useState([])
 
     const {
         formData,
+        setFormData,
         formErrors,
         validate,
         handleChange
-    } = useForm(dataInit, dataSchema) 
+    } = useForm(dataInit, dataSchema)
+
+    useEffect(() => {
+        if (params.id) {
+            const fetchMovie = async () => {
+                try {
+                    const { data } = await getMovieById(params.id)
+                    const movieData = mapToViewModel(data)
+                    setFormData(movieData)
+                }
+                catch (ex) {
+                    toast.error(`${ex.response.status} ${ex.response.data}`)
+                    // REDIRECT TO NOT FOUND
+                }
+            }
+
+            fetchMovie()
+        }
+
+        const fetchGenres = async () => {
+            const { data: genres } = await getGenres()
+            setGenreOptions(genres)
+        }
+
+        fetchGenres()
+    }, [])
 
     const handleSubmit = () => {
 
@@ -38,7 +66,7 @@ function MovieForm () {
         return {
             _id: movie._id,
             title: movie.title,
-            genreId: movie.genre._id,
+            genresIds: movie.genres.map(genre => genre._id),
             numberInStock: movie.numberInStock,
             dailyRentalRate: movie.dailyRentalRate
         }
@@ -56,12 +84,20 @@ function MovieForm () {
                     { formErrors.title && <p className="form-error">{ formErrors.title }</p> }
                 </div>
                 <div className="form-field">
-                    <label className="form-label" htmlFor="genre">
-                        Genre
-                    </label>
-                    <select onChange={ handleChange } className="form-select" value={ formData.genreId } name="genre" id="genreId">
-                        { genreOptions.map(genre => <option key={genre.id} value={ genre.id }>{ genre.name }</option>) }
-                    </select>
+                    <div className="form-label">Genres</div>
+                    <div className="flex flex-row justify-between flex-wrap w-full">
+                        { genreOptions.map(genre => 
+                            <div className="w-5/12" key={ genre._id }>
+                                <input 
+                                    type="checkbox" 
+                                    id={ genre._id } 
+                                    value="first_checkbox" />
+                                <label 
+                                    className="form-label ml-2" 
+                                    htmlFor={ genre._id }>{ genre.name }</label>
+                            </div>
+                        )}
+                    </div>
                     { formErrors.genre && <p className="form-error">{ formErrors.genre }</p> }
                 </div>
                 <div className="form-field">

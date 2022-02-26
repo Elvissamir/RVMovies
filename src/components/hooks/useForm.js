@@ -38,7 +38,14 @@ function useForm (dataInit, dataSchema) {
         setFormData(data)
     }
 
-    return { validate, handleChange, formData, formErrors }
+    return { 
+        validate, 
+        handleChange, 
+        formData, 
+        setFormData,
+        formErrors,
+        setFormErrors
+    }
 }
 
 export {

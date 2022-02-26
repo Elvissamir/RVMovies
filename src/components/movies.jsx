@@ -126,7 +126,7 @@ function Movies() {
       </div>
       <div className="flex flex-col w-9/12">
         <div className="flex">
-          <Link className="button" to='/movies/new'>New Movie</Link>
+          <Link className="button action-button" to='/movies/new'>New Movie</Link>
         </div>
         <div className="flex mt-4">
           <SearchBox query={ searchQuery } onChange={ handleSearch } />
