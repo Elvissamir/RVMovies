@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import Post from './components/post'
+import { ToastContainer } from "react-toastify";
 import Nav from './components/nav'
 import Footer from './components/footer.jsx'
 import Movies from './components/movies.jsx'
@@ -15,12 +15,12 @@ function App() {
   return (
     <div className="App">
       <div className='app-container'>
+        <ToastContainer />
         <div className='app-nav'>
           < Nav />
         </div>
         <div className='app-content-container min-h-screen w-10/12 mx-auto px-2'>
           <Routes>
-            <Route path='/post' element={<Post />}></Route>
             <Route path='/login' element={<LoginForm />}></Route>
             <Route path='/register' element={<RegistrationForm/>}></Route> 
             <Route path='/movies' element={<Movies />}></Route>
