@@ -8,8 +8,9 @@ import { useParams } from "react-router-dom";
 import { toast } from 'react-toastify';
 
 const dataSchema = {
+    _id: Joi.string().required().label('id'),
     title: Joi.string().max(255).required().label('Title'),
-    genreId: Joi.string().required().label('Genre'),
+    genreIds: Joi.array().items(Joi.string()).min(1).required().label('Genres'),
     numberInStock: Joi.number().min(0).max(255).required().label('In Stock'),
     dailyRentalRate: Joi.number().min(0).max(10).required().label('Rate')
 }
@@ -30,7 +31,8 @@ function MovieForm () {
         setFormData,
         formErrors,
         validate,
-        handleChange
+        handleChange,
+        handleCheckboxChange
     } = useForm(dataInit, dataSchema)
 
     useEffect(() => {
@@ -58,15 +60,16 @@ function MovieForm () {
         fetchGenres()
     }, [])
 
-    const handleSubmit = () => {
-
+    const handleSubmit = e => {
+        e.preventDefault()
+        console.log(formData)
     }
 
     const mapToViewModel = movie => {
         return {
             _id: movie._id,
             title: movie.title,
-            genresIds: movie.genres.map(genre => genre._id),
+            genreIds: movie.genres.map(genre => genre._id),
             numberInStock: movie.numberInStock,
             dailyRentalRate: movie.dailyRentalRate
         }
@@ -89,9 +92,12 @@ function MovieForm () {
                         { genreOptions.map(genre => 
                             <div className="w-5/12" key={ genre._id }>
                                 <input 
+                                    onChange={ handleCheckboxChange }
                                     type="checkbox" 
-                                    id={ genre._id } 
-                                    value="first_checkbox" />
+                                    id={genre._id}
+                                    name="genreIds" 
+                                    checked={ formData.genreIds.indexOf(genre._id) === -1? false:true}
+                                    value={ genre._id } />
                                 <label 
                                     className="form-label ml-2" 
                                     htmlFor={ genre._id }>{ genre.name }</label>

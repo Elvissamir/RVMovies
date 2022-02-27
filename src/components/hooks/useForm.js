@@ -38,13 +38,31 @@ function useForm (dataInit, dataSchema) {
         setFormData(data)
     }
 
+    const handleCheckboxChange = ({ target: input }) => {
+        const data = {...formData}
+
+        if (input.checked) {
+            const exists = data[input.name].indexOf(input.value)
+            if (exists === -1) {
+                data[input.name].push(input.value)
+                setFormData(data)
+            }
+        }
+        else {
+            const result = data[input.name].filter(value => value !== input.value)
+            data[input.name] = result
+            setFormData(data)
+        }
+    }
+
     return { 
         validate, 
-        handleChange, 
         formData, 
         setFormData,
         formErrors,
-        setFormErrors
+        setFormErrors,
+        handleChange, 
+        handleCheckboxChange,
     }
 }
 
