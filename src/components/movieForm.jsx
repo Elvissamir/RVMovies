@@ -3,9 +3,9 @@ import { useForm } from "./hooks/useForm"
 import Joi from 'joi';
 import { useState, useEffect } from 'react';
 import { getGenres } from "../services/genresService";
-import { getMovieById } from '../services/moviesService'
+import { getMovieById, saveMovie } from '../services/moviesService'
 import { useNavigate, useParams } from "react-router-dom";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 const formSchema = {
     _id: Joi.string().required().label('id'),
@@ -74,9 +74,16 @@ function MovieForm () {
         fetchGenres()
     }, [])
 
-    const handleSubmit = e => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(formData)
+        try {
+            await saveMovie(formData)
+            navigate('/movies', { replace: true })
+        }
+        catch (ex) {
+            if (ex.response && ex.response.status >= 400 && ex.response.status < 500)
+            toast.error(`${ex.response.status} ${ex.response.data}`)
+        }
     }
 
     const mapToViewModel = movie => {
@@ -136,7 +143,7 @@ function MovieForm () {
                 </div>
                 <div className="form-footer">
                     <button disabled={ validate() } className="form-button w-full">
-                        Change this button
+                        Save
                     </button>
                 </div>
             </form>
