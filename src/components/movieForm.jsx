@@ -4,10 +4,10 @@ import Joi from 'joi';
 import { useState, useEffect } from 'react';
 import { getGenres } from "../services/genresService";
 import { getMovieById } from '../services/moviesService'
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from 'react-toastify';
 
-const dataSchema = {
+const formSchema = {
     _id: Joi.string().required().label('id'),
     title: Joi.string().max(255).required().label('Title'),
     genreIds: Joi.array().items(Joi.string()).min(1).required().label('Genres'),
@@ -16,6 +16,7 @@ const dataSchema = {
 }
 
 const dataInit = {
+    _id: '',
     title: '',
     genreIds: [],
     numberInStock: 0,
@@ -24,38 +25,51 @@ const dataInit = {
 
 function MovieForm () {
     const params = useParams()
+    const navigate = useNavigate()
+    
     const [ genreOptions, setGenreOptions ] = useState([])
-
     const {
         formData,
+        setDataSchema,
         setFormData,
         formErrors,
         validate,
         handleChange,
         handleCheckboxChange
-    } = useForm(dataInit, dataSchema)
+    } = useForm(dataInit, formSchema)
+
+    const fetchMovie = async () => {
+        try {
+            const { data } = await getMovieById(params.id)
+            const movieData = mapToViewModel(data)
+            setFormData(movieData)
+        }
+        catch (ex) {
+            if (ex.response && ex.response.status === 404)
+                return navigate('/not-found', { replace:true })
+        }
+    }
+
+    const fetchGenres = async () => {
+        const { data: genres } = await getGenres()
+        setGenreOptions(genres)
+    }
+
+    const clearIdField = () => {
+        const data = {...formData}
+        delete data._id
+        setFormData(data)
+
+        const schema = {...formSchema}
+        delete schema._id
+        setDataSchema(schema)
+    }
 
     useEffect(() => {
-        if (params.id) {
-            const fetchMovie = async () => {
-                try {
-                    const { data } = await getMovieById(params.id)
-                    const movieData = mapToViewModel(data)
-                    setFormData(movieData)
-                }
-                catch (ex) {
-                    toast.error(`${ex.response.status} ${ex.response.data}`)
-                    // REDIRECT TO NOT FOUND
-                }
-            }
-
+        if (params.id)
             fetchMovie()
-        }
-
-        const fetchGenres = async () => {
-            const { data: genres } = await getGenres()
-            setGenreOptions(genres)
-        }
+        else
+            clearIdField()
 
         fetchGenres()
     }, [])
@@ -122,7 +136,7 @@ function MovieForm () {
                 </div>
                 <div className="form-footer">
                     <button disabled={ validate() } className="form-button w-full">
-                        Sign In
+                        Change this button
                     </button>
                 </div>
             </form>

@@ -1,7 +1,8 @@
 import Joi from 'joi'
 import { useState } from "react"
 
-function useForm (dataInit, dataSchema) {
+function useForm (dataInit, formSchema) {
+    const [ dataSchema, setDataSchema ] = useState(formSchema)
     const [ formData, setFormData ] = useState(dataInit)
     const [ formErrors, setFormErrors ] = useState({})
 
@@ -53,10 +54,13 @@ function useForm (dataInit, dataSchema) {
             data[input.name] = result
             setFormData(data)
         }
+
+        console.log(validate())
     }
 
     return { 
         validate, 
+        setDataSchema,
         formData, 
         setFormData,
         formErrors,
