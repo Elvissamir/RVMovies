@@ -1,27 +1,46 @@
 import Joi from 'joi'
+import { loginUser } from '../services/usersService'
 import { useForm } from './hooks/useForm'
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function LoginForm () {
+    const navigate = useNavigate()
+
     const dataInit = {
-        username: '',
+        email: '',
         password: ''
     }
 
     const dataSchema = {
-        username: Joi.string().required().label('Username'),
-        password: Joi.string().required().label('Password')
+        email: Joi.string().email({ tlds: {allow: false} }).required().label('Email'),
+        password: Joi.string().min(6).required().label('Password')
     }
 
     const { 
         formData, 
         formErrors, 
+        setFormErrors,
         validate, 
         handleChange
     } = useForm(dataInit, dataSchema)   
     
-    const handleSubmit = () => {
-        // Call the server
-        console.log('Submitted')
+    const handleSubmit = async e => {
+        e.preventDefault()
+
+        try {
+            const {data: jwt } = await loginUser(formData)
+            localStorage.setItem('token', jwt)
+            navigate('/movies', { replace: true })
+        }
+        catch (ex) {
+            if (ex.response && ex.response.status === 400) {
+                const errors = {...formErrors}
+                errors.email = ex.response.data
+                setFormErrors(errors)
+                toast.error(`${ex.response.status} ${ex.response.data}`)
+            }
+        }
     }
 
     return (
@@ -29,11 +48,11 @@ function LoginForm () {
             <h1 className="form-title">Login</h1>
             <form onSubmit={ handleSubmit } className="form">
                 <div className="form-field">
-                    <label className="form-label" htmlFor="username">
-                        Username
+                    <label className="form-label" htmlFor="email">
+                        Email
                     </label>
-                    <input onChange={ handleChange } className="form-input" value={ formData.username } id="username" type='text' />
-                    { formErrors.username && <p className="form-error">{ formErrors.username }</p> }
+                    <input onChange={ handleChange } className="form-input" value={ formData.email } id="email" type='email' />
+                    { formErrors.email && <p className="form-error">{ formErrors.email }</p> }
                 </div>
                 <div className="form-field">
                     <label className="form-label" htmlFor="password">

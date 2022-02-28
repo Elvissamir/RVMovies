@@ -84,8 +84,9 @@ function MovieForm () {
         fetchGenres()
     }, [])
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async e => {
         e.preventDefault()
+        
         try {
             await saveMovie(formData)
             navigate('/movies', { replace: true })

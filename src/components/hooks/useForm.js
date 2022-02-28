@@ -54,8 +54,6 @@ function useForm (dataInit, formSchema) {
             data[input.name] = result
             setFormData(data)
         }
-
-        console.log(validate())
     }
 
     return { 

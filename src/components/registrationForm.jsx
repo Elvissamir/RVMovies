@@ -1,28 +1,56 @@
+import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Joi from 'joi'
+import { register } from '../services/usersService';
 import { useForm } from "./hooks/useForm"
+import { UserContext } from './context/userContext';
+import { toast } from 'react-toastify';
 
 function RegistrationForm () {
+    const navigate = useNavigate()
+    const { currentUser, setCurrentUser } = useContext(UserContext)
+
     const dataInit = {
-        username: '',
-        name: '',
+        email: '',
+        first_name: '',
+        last_name: '',
         password: '',
     }
 
     const dataSchema = {
-        username: Joi.string().required().email({ tlds: {allow: false} }).label('Username'),
-        name: Joi.string().required().label('Name'),
-        password: Joi.string().min(5).required().label('Password')
+        email: Joi.string().required().email({ tlds: {allow: false} }).label('Email'),
+        first_name: Joi.string().required().label('First name'),
+        last_name: Joi.string().required().label('Last name'),
+        password: Joi.string().min(6).required().label('Password')
     }
 
     const {
         formData,
         formErrors,
+        setFormErrors,
         validate,
         handleChange
     } = useForm(dataInit, dataSchema)
 
-    const handleSubmit = () => {
-        
+    const handleSubmit = async e => {
+        e.preventDefault()
+   
+        try {
+            const response = await register(formData)
+            
+            localStorage.setItem('token', response.headers['x-auth-token'])
+            setCurrentUser(response.data)
+            navigate('/movies', { replace: true })
+        }
+        catch (ex) {
+            if (ex.response && ex.response.status === 400) {
+                const errors = { ...formErrors }
+                errors.email = ex.response.data
+                setFormErrors(errors)
+                
+                toast.error(`${ex.response.status} ${ex.response.data}`)
+            }
+        }
     }
 
     return (
@@ -30,12 +58,26 @@ function RegistrationForm () {
             <h1 className="form-title">Register</h1>
             <form onSubmit={ handleSubmit } className="form">
                 <div className="form-field">
-                    <label className="form-label" htmlFor="username">
-                        Username
+                    <label className="form-label" htmlFor="first_name">
+                        First name
                     </label>
-                    <input onChange={ handleChange } className="form-input" value={ formData.username } id="username" type='text' />
-                    { formErrors.username && <p className="form-error">{ formErrors.username }</p> }
+                    <input onChange={ handleChange } className="form-input" value={ formData.firs_name } id="first_name" type='text' />
+                    { formErrors.first_name && <p className="form-error">{ formErrors.first_name }</p> }
                 </div>
+                <div className="form-field">
+                    <label className="form-label" htmlFor="last_name">
+                        Last name
+                    </label>
+                    <input onChange={ handleChange } className="form-input" value={ formData.last_name } id="last_name" type='text' />
+                    { formErrors.last_name && <p className="form-error">{ formErrors.last_name }</p> }
+                </div>
+                <div className="form-field">
+                    <label className="form-label" htmlFor="email">
+                        Email
+                    </label>
+                    <input onChange={ handleChange } className="form-input" value={ formData.email } id="email" type='email' />
+                    { formErrors.email && <p className="form-error">{ formErrors.email }</p> }
+                </div> 
                 <div className="form-field">
                     <label className="form-label" htmlFor="password">
                         Password
@@ -45,7 +87,7 @@ function RegistrationForm () {
                 </div>
                 <div className="form-footer">
                     <button disabled={ validate() } className="form-button w-full">
-                        Sign In
+                        Register
                     </button>
                 </div>
             </form>
