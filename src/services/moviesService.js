@@ -15,8 +15,7 @@ function saveMovie (movie) {
     if (movie._id) {
         const data = { ...movie }
         delete data._id
-        console.log(data)
-        //return httpService.put(`${moviesEndpoint}/${movie._id}`, data)
+        return httpService.put(`${moviesEndpoint}/${movie._id}`, data)
     }
 
     return httpService.post(`${moviesEndpoint}`, movie)

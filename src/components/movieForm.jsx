@@ -38,6 +38,16 @@ function MovieForm () {
         handleCheckboxChange
     } = useForm(dataInit, formSchema)
 
+    const mapToViewModel = movie => {
+        return {
+            _id: movie._id,
+            title: movie.title,
+            genreIds: movie.genres.map(genre => genre._id),
+            numberInStock: movie.numberInStock,
+            dailyRentalRate: movie.dailyRentalRate
+        }
+    }
+
     const fetchMovie = async () => {
         try {
             const { data } = await getMovieById(params.id)
@@ -83,16 +93,6 @@ function MovieForm () {
         catch (ex) {
             if (ex.response && ex.response.status >= 400 && ex.response.status < 500)
             toast.error(`${ex.response.status} ${ex.response.data}`)
-        }
-    }
-
-    const mapToViewModel = movie => {
-        return {
-            _id: movie._id,
-            title: movie.title,
-            genreIds: movie.genres.map(genre => genre._id),
-            numberInStock: movie.numberInStock,
-            dailyRentalRate: movie.dailyRentalRate
         }
     }
     
