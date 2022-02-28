@@ -1,13 +1,40 @@
+import { useContext } from "react"
+import { UserContext } from "./context/userContext"
 import { NavLink } from "react-router-dom"
 
 function Nav () {
-    const menuLinks = [
-        {url: '/movies', name: 'Movies'},
-        {url: '/rentals', name: 'Rentals'},
-        {url: '/customers', name: 'Customers'},
-        {url: '/login', name: 'Login'},
-        {url: '/register', name: 'Register'}
-    ]
+    const { currentUser } = useContext(UserContext)
+    const menuLinks = [{ name: 'Movies', url: '/movies' }]
+
+    const renderAuth = () => {
+        const items = [
+            { name: 'Login', url: '/login'},
+            { name: 'Register', url: '/register'},
+        ]
+
+        return (
+            items.map(item =>      
+                <li className="flex" key={ item.name }>
+                    <NavLink 
+                        className="menu-link" 
+                        to={ item.url }>
+                            { item.name }
+                    </NavLink>
+                </li>
+            )
+        )
+    }
+
+    const renderDetails = () => {
+        return (
+            <li className="flex items-center ml-4">
+                <div className="h-8 w-8 rounded-full bg-green-400"></div>
+                <div className="flex ml-2">{ currentUser.first_name }</div>
+                <button className="ml-4 button bg-blue-400">Logout</button>
+            </li>
+        )
+    }
+
 
     return (
         <nav className="nav">
@@ -23,6 +50,7 @@ function Nav () {
                                         { link.name }
                                 </NavLink>
                             </li>) }
+                            { currentUser? renderDetails():renderAuth() }
                     </ul>
                 </div>
             </div>

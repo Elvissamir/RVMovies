@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import jwtDecode from 'jwt-decode';
 import { UserContext } from './components/context/userContext';
 import { ToastContainer } from "react-toastify";
 import Nav from './components/nav'
@@ -12,10 +13,9 @@ import MovieForm from './components/movieForm';
 import LoginForm from './components/loginForm';
 import RegistrationForm from './components/registrationForm';
 import 'react-toastify/dist/ReactToastify.css'
-import jwtDecode from 'jwt-decode';
 
 function App() { 
-  const [ currentUser, setCurrentUser ] = useState({})
+  const [ currentUser, setCurrentUser ] = useState(null)
 
   useEffect(() => {
     const jwt = localStorage.getItem('token')
@@ -23,7 +23,6 @@ function App() {
       const user = jwtDecode(jwt)
       setCurrentUser(user)
     }
-
   }, [])
 
   return (
