@@ -16,7 +16,7 @@ import RegistrationForm from './components/registrationForm';
 import 'react-toastify/dist/ReactToastify.css'
 
 function App() { 
-  const { currentUser, setCurrentUser, logout } = useUser() 
+  const { currentUser, setCurrentUser, logout, login } = useUser() 
 
   useEffect(() => {
     const jwt = localStorage.getItem('token')
@@ -30,7 +30,7 @@ function App() {
     <div className="App">
       <div className='app-container'>
         <ToastContainer />
-        <UserContext.Provider value={{ currentUser, setCurrentUser, logout }}>
+        <UserContext.Provider value={{ currentUser, setCurrentUser, login, logout }}>
           <div className='app-nav'>
             < Nav />
           </div>

@@ -7,8 +7,7 @@ import { UserContext } from './context/userContext';
 import { toast } from 'react-toastify';
 
 function RegistrationForm () {
-    const navigate = useNavigate()
-    const { currentUser, setCurrentUser } = useContext(UserContext)
+    const { login } = useContext(UserContext)
 
     const dataInit = {
         email: '',
@@ -37,10 +36,7 @@ function RegistrationForm () {
    
         try {
             const response = await register(formData)
-            
-            localStorage.setItem('token', response.headers['x-auth-token'])
-            setCurrentUser(response.data)
-            navigate('/movies', { replace: true })
+            login(response.headers['x-auth-token'])
         }
         catch (ex) {
             if (ex.response && ex.response.status === 400) {

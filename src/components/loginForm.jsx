@@ -1,11 +1,13 @@
 import Joi from 'joi'
 import { loginUser } from '../services/usersService'
 import { useForm } from './hooks/useForm'
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import jwtDecode from 'jwt-decode';
+import { useContext } from 'react';
+import { UserContext } from './context/userContext';
 
 function LoginForm () {
-    const navigate = useNavigate()
+    const { login } = useContext(UserContext)
 
     const dataInit = {
         email: '',
@@ -30,8 +32,7 @@ function LoginForm () {
 
         try {
             const {data: jwt } = await loginUser(formData)
-            localStorage.setItem('token', jwt)
-            navigate('/movies', { replace: true })
+            login(jwt)
         }
         catch (ex) {
             if (ex.response && ex.response.status === 400) {
