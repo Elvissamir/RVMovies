@@ -1,7 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import { useEffect } from 'react';
 import useUser from './components/hooks/useUser';
-import jwtDecode from 'jwt-decode';
 import { UserContext } from './components/context/userContext';
 import { ToastContainer } from "react-toastify";
 import Nav from './components/nav'
@@ -20,8 +19,8 @@ function App() {
     currentUser, 
     setCurrentUser, 
     setCurrentUserFromToken, 
-    logout, 
-    login } = useUser() 
+    logoutUser, 
+    loginUser } = useUser() 
 
   useEffect(() => {
     setCurrentUserFromToken()
@@ -31,7 +30,7 @@ function App() {
     <div className="App">
       <div className='app-container'>
         <ToastContainer />
-        <UserContext.Provider value={{ currentUser, setCurrentUser, login, logout }}>
+        <UserContext.Provider value={{ currentUser, setCurrentUser, loginUser, logoutUser }}>
           <div className='app-nav'>
             < Nav />
           </div>

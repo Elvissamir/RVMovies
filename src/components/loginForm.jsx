@@ -1,6 +1,6 @@
 import Joi from 'joi'
-import { loginUser } from '../services/usersService'
 import { useForm } from './hooks/useForm'
+import { login } from '../services/usersService';
 import { toast } from 'react-toastify';
 import { useContext } from 'react';
 import { UserContext } from './context/userContext';
@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 function LoginForm () {
     const navigate = useNavigate()
-    const { login } = useContext(UserContext)
+    const { loginUser } = useContext(UserContext)
 
     const dataInit = {
         email: '',
@@ -32,8 +32,8 @@ function LoginForm () {
         e.preventDefault()
 
         try {
-            const {data: jwt } = await loginUser(formData)
-            login(jwt)
+            const {data: jwt } = await login(formData)
+            loginUser(jwt)
             navigate('/', { replace: true })
         } 
            

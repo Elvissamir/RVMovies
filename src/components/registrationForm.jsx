@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 
 function RegistrationForm () {
     const navigate = useNavigate()
-    const { login } = useContext(UserContext)
+    const { loginUser } = useContext(UserContext)
 
     const dataInit = {
         email: '',
@@ -37,7 +37,7 @@ function RegistrationForm () {
    
         try {
             const response = await register(formData)
-            login(response.headers['x-auth-token'])
+            loginUser(response.headers['x-auth-token'])
             navigate('/', { replace: true })
         }
         catch (ex) {

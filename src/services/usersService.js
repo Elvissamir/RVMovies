@@ -12,11 +12,11 @@ function register (user) {
     return httpService.post(usersEndpoint, user)
 }
 
-function loginUser ({ email, password }) {
+function login ({ email, password }) {
     return httpService.post(`${loginEndpoint}`, { email, password })
 }
 
 export {
     register,
-    loginUser,
+    login,
 }

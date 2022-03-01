@@ -1,10 +1,10 @@
 import { useState } from "react"
-import jwtDecode from "jwt-decode";
+import auth from "../../services/authService"
 
 function useUser () {
     const [ currentUser, setCurrentUser ] = useState(null)
 
-    function mapUserProperties ({ _id, first_name, last_name, email, isAdmin }) {
+    const mapUserProperties = ({ _id, first_name, last_name, email, isAdmin }) => {
         return {
             _id, 
             first_name,
@@ -15,23 +15,24 @@ function useUser () {
     }
 
     const setCurrentUserFromToken = () => {
-        const jwt = localStorage.getItem('token')
+        const token = auth.getJwt()
 
-        if (jwt) {
-          const user = jwtDecode(jwt)
+        if (token) {
+          const user = auth.getJwtData(token)
           setCurrentUser(user)
         }
     }
 
-    const login = (token) => {
-        localStorage.setItem('token', token)
-
-        const userData = mapUserProperties(jwtDecode(token))
+    const loginUser = (token) => {
+        auth.login(token)
+            
+        const data = auth.getJwtData(token)
+        const userData = mapUserProperties(data)
         setCurrentUser(userData)
     }
 
-    const logout = () => {
-        localStorage.removeItem('token')
+    const logoutUser = () => {
+        auth.logout()
         setCurrentUser(null)
     }
 
@@ -39,8 +40,8 @@ function useUser () {
             currentUser, 
             setCurrentUser, 
             setCurrentUserFromToken,
-            login,
-            logout
+            loginUser,
+            logoutUser
         }
 }
 
