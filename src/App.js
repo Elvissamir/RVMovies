@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import useUser from './components/hooks/useUser';
 import jwtDecode from 'jwt-decode';
 import { UserContext } from './components/context/userContext';
 import { ToastContainer } from "react-toastify";
@@ -15,7 +16,7 @@ import RegistrationForm from './components/registrationForm';
 import 'react-toastify/dist/ReactToastify.css'
 
 function App() { 
-  const [ currentUser, setCurrentUser ] = useState(null)
+  const { currentUser, setCurrentUser, logout } = useUser() 
 
   useEffect(() => {
     const jwt = localStorage.getItem('token')
@@ -29,7 +30,7 @@ function App() {
     <div className="App">
       <div className='app-container'>
         <ToastContainer />
-        <UserContext.Provider value={{ currentUser, setCurrentUser }}>
+        <UserContext.Provider value={{ currentUser, setCurrentUser, logout }}>
           <div className='app-nav'>
             < Nav />
           </div>

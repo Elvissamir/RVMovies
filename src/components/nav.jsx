@@ -3,7 +3,7 @@ import { UserContext } from "./context/userContext"
 import { NavLink } from "react-router-dom"
 
 function Nav () {
-    const { currentUser } = useContext(UserContext)
+    const { currentUser, logout } = useContext(UserContext)
     const menuLinks = [{ name: 'Movies', url: '/movies' }]
 
     const renderAuth = () => {
@@ -25,16 +25,15 @@ function Nav () {
         )
     }
 
-    const renderDetails = () => {
+    const renderUserDetails = () => {
         return (
             <li className="flex items-center ml-4">
                 <div className="h-8 w-8 rounded-full bg-green-400"></div>
                 <div className="flex ml-2">{ currentUser.first_name }</div>
-                <button className="ml-4 button bg-blue-400">Logout</button>
+                <button onClick={ logout } className="ml-4 button bg-blue-400">Logout</button>
             </li>
         )
     }
-
 
     return (
         <nav className="nav">
@@ -50,7 +49,7 @@ function Nav () {
                                         { link.name }
                                 </NavLink>
                             </li>) }
-                            { currentUser? renderDetails():renderAuth() }
+                            { currentUser? renderUserDetails():renderAuth() }
                     </ul>
                 </div>
             </div>
