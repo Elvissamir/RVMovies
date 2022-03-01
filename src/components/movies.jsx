@@ -112,9 +112,13 @@ function Movies() {
   };
 
   if (movies.length === 0)
-    return  (<div className="mt-8">
-              <div>There are no movies to show</div>
-            </div>)
+    return  (
+        <div className="mt-8 mx-auto">
+          <div className="flex justify-center">
+            <Link className="button action-button" to='/movies/new'>New Movie</Link>
+          </div>
+          <div className="text-center mt-8">There are no movies to show</div>
+        </div>)
 
   return (
     <div className="flex justify-between mt-8 w-full">
