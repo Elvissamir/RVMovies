@@ -7,6 +7,7 @@ import { UserContext } from './context/userContext';
 import { toast } from 'react-toastify';
 
 function RegistrationForm () {
+    const navigate = useNavigate()
     const { login } = useContext(UserContext)
 
     const dataInit = {
@@ -37,6 +38,7 @@ function RegistrationForm () {
         try {
             const response = await register(formData)
             login(response.headers['x-auth-token'])
+            navigate('/', { replace: true })
         }
         catch (ex) {
             if (ex.response && ex.response.status === 400) {

@@ -16,14 +16,15 @@ import RegistrationForm from './components/registrationForm';
 import 'react-toastify/dist/ReactToastify.css'
 
 function App() { 
-  const { currentUser, setCurrentUser, logout, login } = useUser() 
+  const { 
+    currentUser, 
+    setCurrentUser, 
+    setCurrentUserFromToken, 
+    logout, 
+    login } = useUser() 
 
   useEffect(() => {
-    const jwt = localStorage.getItem('token')
-    if (jwt) {
-      const user = jwtDecode(jwt)
-      setCurrentUser(user)
-    }
+    setCurrentUserFromToken()
   }, [])
 
   return (

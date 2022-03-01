@@ -2,11 +2,12 @@ import Joi from 'joi'
 import { loginUser } from '../services/usersService'
 import { useForm } from './hooks/useForm'
 import { toast } from 'react-toastify';
-import jwtDecode from 'jwt-decode';
 import { useContext } from 'react';
 import { UserContext } from './context/userContext';
+import { useNavigate } from 'react-router-dom';
 
 function LoginForm () {
+    const navigate = useNavigate()
     const { login } = useContext(UserContext)
 
     const dataInit = {
@@ -33,7 +34,9 @@ function LoginForm () {
         try {
             const {data: jwt } = await loginUser(formData)
             login(jwt)
-        }
+            navigate('/', { replace: true })
+        } 
+           
         catch (ex) {
             if (ex.response && ex.response.status === 400) {
                 const errors = {...formErrors}
