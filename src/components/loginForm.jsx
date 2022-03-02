@@ -4,10 +4,11 @@ import { login } from '../services/usersService';
 import { toast } from 'react-toastify';
 import { useContext } from 'react';
 import { UserContext } from './context/userContext';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function LoginForm () {
     const navigate = useNavigate()
+    const { state } = useLocation()
     const { loginUser } = useContext(UserContext)
 
     const dataInit = {
@@ -34,7 +35,7 @@ function LoginForm () {
         try {
             const {data: jwt } = await login(formData)
             loginUser(jwt)
-            navigate('/', { replace: true })
+            navigate(state, { replace: true })
         } 
            
         catch (ex) {

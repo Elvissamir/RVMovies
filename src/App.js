@@ -12,6 +12,7 @@ import NotFound from './components/notFound';
 import MovieForm from './components/movieForm';
 import LoginForm from './components/loginForm';
 import RegistrationForm from './components/registrationForm';
+import RequireAuth from './components/RequireAuth';
 import 'react-toastify/dist/ReactToastify.css'
 
 function App() { 
@@ -36,10 +37,18 @@ function App() {
           </div>
           <div className='app-content-container min-h-screen w-10/12 mx-auto px-2'>
             <Routes>
+
               <Route path='/login' element={<LoginForm />}></Route>
               <Route path='/register' element={<RegistrationForm/>}></Route> 
               <Route path='/movies' element={<Movies />}></Route>
-              <Route path='/movies/new' element={<MovieForm />}></Route>
+
+              <Route 
+                path='/movies/new' 
+                element={
+                  <RequireAuth redirectTo='/login' destination='/movies/new'>
+                    <MovieForm />
+                  </RequireAuth>} />
+
               <Route path='/movies/:id' element={<MovieForm />}></Route>
               <Route path='/customers' element={ <Customers /> }></Route>
               <Route path='/rentals' element={ <Rentals /> }></Route>
