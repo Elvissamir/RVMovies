@@ -1,5 +1,5 @@
-import React from "react";
-import { useState, useEffect } from "react"
+import React, { useContext, useEffect, useState } from "react";
+import { UserContext } from './context/userContext';
 import _ from 'lodash'
 // Services
 import { getGenres } from "../services/genresService"
@@ -16,6 +16,8 @@ import SearchBox from './common/searchBox'
 import { toast } from 'react-toastify';
 
 function Movies() {
+
+  const { currentUser } = useContext(UserContext)
 
   const [ genreFilters, setGenreFilters ] = useState([])
   const [ movies, setMovies ] = useState([]);
@@ -114,9 +116,11 @@ function Movies() {
   if (movies.length === 0)
     return  (
         <div className="mt-8 mx-auto">
-          <div className="flex justify-center">
-            <Link className="button action-button" to='/movies/new'>New Movie</Link>
-          </div>
+          {
+            currentUser &&  <div className="flex justify-center">
+                <Link className="button action-button" to='/movies/new'>New Movie</Link>
+              </div>
+          }
           <div className="text-center mt-8">There are no movies to show</div>
         </div>)
 
@@ -129,9 +133,11 @@ function Movies() {
           filters={ genreFilters } />
       </div>
       <div className="flex flex-col w-9/12">
-        <div className="flex">
-          <Link className="button action-button" to='/movies/new'>New Movie</Link>
-        </div>
+          {
+            currentUser &&  <div className="flex justify-center">
+                <Link className="button action-button" to='/movies/new'>New Movie</Link>
+              </div>
+          }
         <div className="flex mt-4">
           <SearchBox query={ searchQuery } onChange={ handleSearch } />
         </div>
