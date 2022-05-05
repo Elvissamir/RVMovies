@@ -40,20 +40,36 @@ function useForm (dataInit, formSchema) {
     }
 
     const handleCheckboxChange = ({ target: input }) => {
-        const data = {...formData}
+        const data = { ...formData }
 
         if (input.checked) {
-            const exists = data[input.name].indexOf(input.value)
-            if (exists === -1) {
-                data[input.name].push(input.value)
-                setFormData(data)
+            if (Array.isArray(data[input.id])) {
+                const exists = data[input.id].indexOf(input.value)
+                if (exists === -1) {
+                    data[input.id].push(input.value)
+                }
             }
-        }
-        else {
-            const result = data[input.name].filter(value => value !== input.value)
-            data[input.name] = result
+            else {
+                data[input.id] = true
+            }
             setFormData(data)
         }
+        else {
+            if (Array.isArray(data[input.id])) {
+                const result = data[input.id].filter(value => value !== input.value)
+                data[input.id] = result
+            }
+            else {     
+                data[input.id] = false
+            }
+            setFormData(data)
+        }
+    }
+
+    const handleSelectChange = ({ target: input }) => {
+        const data = { ...formData }
+        data[input.id] = input.value
+        setFormData(data)
     }
 
     return { 
@@ -64,10 +80,9 @@ function useForm (dataInit, formSchema) {
         formErrors,
         setFormErrors,
         handleChange, 
+        handleSelectChange,
         handleCheckboxChange,
     }
 }
 
-export {
-    useForm
-}
+export default useForm

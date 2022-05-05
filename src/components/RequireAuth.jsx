@@ -8,4 +8,4 @@ function RequireAuth ({ children, redirectTo, destination }) {
     return currentUser? children: <Navigate to={redirectTo} state={destination} replace />
 }
 
-export default RequireAuth
+export default RequireAuth 
