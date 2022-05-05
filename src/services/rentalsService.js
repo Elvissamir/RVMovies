@@ -1,8 +1,7 @@
 import httpService from './httpService'
-import config from '../config.json'
 
-const rentalsEndpoint = `${config.apiUrl}/rentals`
-const returnsEndpoint = `${config.apiUrl}/returns`
+const rentalsEndpoint = `${process.env.REACT_APP_API_URL}/rentals`
+const returnsEndpoint = `${process.env.REACT_APP_API_URL}/returns`
 
 function getRentals () {
     return httpService.get(rentalsEndpoint)

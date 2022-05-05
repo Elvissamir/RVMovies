@@ -1,7 +1,6 @@
 import httpService from "./httpService";
-import config from '../config.json'
 
-const customersEndpoint = `${config.apiUrl}/customers`
+const customersEndpoint = `${process.env.REACT_APP_API_URL}/customers`
 
 function getCustomers () {
     return httpService.get(customersEndpoint)

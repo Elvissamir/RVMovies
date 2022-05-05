@@ -1,7 +1,7 @@
 import httpService from "./httpService"
 import config from '../config.json'
 
-const moviesEndpoint = `${config.apiUrl}/movies`
+const moviesEndpoint = `${process.env.REACT_APP_API_URL}/movies`
 
 function movieUrl (id) {
     return `${moviesEndpoint}/${id}`
