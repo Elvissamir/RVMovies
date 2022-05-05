@@ -66,7 +66,7 @@ function RegistrationForm () {
                 handleChange={ handleChange } />
             <InputField
                 label='Last Name'
-                id='first_name'
+                id='last_name'
                 value={ formData.last_name }
                 error={ formErrors.last_name }
                 type='text'
