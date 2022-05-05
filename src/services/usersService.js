@@ -1,4 +1,3 @@
-import config from '../config.json'
 import httpService from "./httpService"
 
 const usersEndpoint = `${process.env.REACT_APP_API_URL}/users`
